@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>스쿨존 마이페이지</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html,
+        body {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            width: 100%;
+            min-height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .fixed-container {
+            position: fixed;
+            height: 60px;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            /* 다른 요소 위에 나타나도록 z-index 설정 */
+            background-color: #ffffff;
+            /* 배경색 지정 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* 그림자 효과 추가 */
+            padding: 10px 20px;
+            /* 내부 여백 설정 */
+            display: flex;
+            justify-content: center;
+            /* 수평 가운데 정렬 */
+            align-items: center;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content-Place {
+            display: none;
+            position: absolute;
+            min-width: 204px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #6fe0ff;
+        }
+
+        /* 페이지 버튼을 감싸는 div 스타일 */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            align-items: center;
+            gap: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 상단에 고정된 요소들을 담을 컨테이너 -->
+    <div class="fixed-container">
+        <!-- 로고 또는 사이트 제목 -->
+        <button
+            style="width: auto; height: auto; font-size: 40px; text-align: center; color: #04bbf4; margin-right: 10px; display: block;"
+            onclick="goToMainPage()">스쿨존</button>
+        <span style="height: 43px; font-size: 25px; text-align: center; color: #000; margin-top: 20px;">마이페이지</span>
+    </div>
+    <div style="width: 1920px; height: 1080px; position: relative; overflow: hidden; background: #fff;">
+        <svg width="1920" height="1" viewBox="0 0 1920 1" fill="none" xmlns="http://www.w3.org/2000/svg"
+            style="position: absolute; left: -1px; top: 127px;" preserveAspectRatio="none">
+            <line x1="-0.00476074" y1="0.5" x2="1920" y2="0.5" stroke="black"></line>
+        </svg>
+        <div style="width: 307px; height: 952px; position: absolute; left: 1612px; top: 127px; background: #e3f9ff;">
+        </div>
+        <div style="width: 307px; height: 952px; position: absolute; left: -1px; top: 127px; background: #e3f9ff;">
+        </div>
+        <div style="width: 307px; height: 74px; position: absolute; left: -1px; top: 570px; background: #e3f9ff;"></div>
+
+
+        <!-- 게시글 목록 테이블 -->
+        <div style="width: 1240px; height: 2000; position: absolute; left: 343px; top: 172px;">
+            <table id="postTable" style="width: 1240px; position: absolute; top: 0; border-collapse: collapse;">
+            </table>
+            <!-- 페이지 번호 버튼을 담을 컨테이너 -->
+            <div class="pagination-container">
+            </div>
+        </div>
+
+        <!-- 목록 -->
+        <div style="font-weight: bold;">
+            <button onclick="GoToMyPage_MemberInfoChange()"
+                style="width: 307px; height: 74px; position: absolute; left: 0px; top: 128px; font-size: 25px; text-align: center; color: #000; background: #e3f9ff;">
+                회원정보 수정</button>
+            <button onclick="goToMyPosts()"
+                style="width: 307px; height: 74px; position: absolute; left: 0px; top: 202px; font-size: 25px; text-align: center; color: #000; background: #a4ebff;">
+                중고거래</button>
+            <button onclick="goToMyPosts()"
+                style="width: 307px; height: 74px; position: absolute; left: 0px; top: 273px; font-size: 20px; text-align: center; color: #000; background: #6fe0ff">
+                <li>내 상품목록</li>
+            </button>
+            <button onclick="goToSalesHistory()"
+                style="width: 307px; height: 74px; position: absolute; left: 0px; top: 347px; font-size: 20px; text-align: center; color: #000; background: #e3f9ff;">
+                <li>판매내역</li>
+            </button>
+            <button onclick="goToPurchaseHistory()"
+                style="width: 307px; height: 74px; position: absolute; left: 0px; top: 421px; font-size: 20px; text-align: center; color: #000; background: #e3f9ff;">
+                <li>구매내역</li>
+            </button>
+            <button onclick="goToWishlist()"
+                style="width: 307px; height: 74px; position: absolute; left: 0px; top: 495px; font-size: 20px; text-align: center; color: #000; background: #e3f9ff;">
+                <li>찜한 상품</li>
+            </button>
+            <div class="dropdown" onmouseover="keepDropdownOpen_Place()" onmouseleave="hideDropdown_Place()"
+                style="position: absolute; left: 0px; top: 569px;">
+                <button class="dropbtn" onclick="GoToMyPage_Place_ReviewList()"
+                    style="width: 307px; height: 74px; font-size: 25px; text-align: center; color: #000; background: #e3f9ff;">플레이스</button>
+                <div class="dropdown-content-Place">
+                    <button onclick="GoToMyPage_Place_ReviewList()"
+                        style="width: 307px; height: 74px; position: absolute; left: 0px; top: 0px; font-size: 20px; text-align: center; color: #000; background: #e3f9ff">
+                        <li>리뷰 목록</li>
+                    </button>
+                </div>
+            </div>
+            <script>
+                var totalPosts = 25;    // 게시글의 갯수
+                var postsPerPage = 6;   // 한 페이지에 보이는 게시글의 갯수
+                var currentPage = 1;    // 현재 페이지
+                var maxPage = Math.ceil(totalPosts / postsPerPage);
+
+                // 게시글 생성
+                function generatePosts() {
+                    var postTable = document.getElementById('postTable');
+                    postTable.innerHTML = ''; // 이전 행들을 삭제
+
+                    // 테이블 헤더 추가
+                    var headerRow = postTable.insertRow();
+                    headerRow.innerHTML = `<th style="width: 124px; height: 57px; font-size: 15px; font-weight: 700; text-align: center; color: #000; border: 1px solid #bababa;">번호</th>
+                                   <th style="width: 124px; height: 57px; font-size: 15px; font-weight: 700; text-align: center; color: #000; border: 1px solid #bababa;">상품 이미지</th>
+                                   <th style="width: 868px; height: 57px; font-size: 15px; font-weight: 700; text-align: center; color: #000; border: 1px solid #bababa;">상품명</th>
+                                   <th style="width: 124px; height: 57px; font-size: 15px; font-weight: 700; text-align: center; color: #000; border: 1px solid #bababa;">상품가격</th>
+                                   <th style="width: 124px; height: 57px; font-size: 15px; font-weight: 700; text-align: center; color: #000; border: 1px solid #bababa;">작성일</th>`;
+
+                    for (var i = (currentPage - 1) * postsPerPage; i < Math.min(currentPage * postsPerPage, totalPosts); i++) {
+                        var newRow = postTable.insertRow(); // 새로운 행 추가
+
+                        // 셀에 데이터 추가
+                        newRow.innerHTML = `<td style="width: 124px; height: 124px; text-align: center; color: #000; border: 1px solid #bababa;">${i + 1}</td>
+                                    <td style="width: 124px; height: 124px; text-align: center; color: #000; border: 1px solid #bababa;"><img src="이미지_경로.jpg" alt="이미지 설명"></td>
+                                    <td style="width: 868px; height: 124px; text-align: center; color: #000; border: 1px solid #bababa;">상품명</td>
+                                    <td style="width: 124px; height: 124px; text-align: center; color: #000; border: 1px solid #bababa;">${4500}원</td>
+                                    <td style="width: 124px; height: 124px; text-align: center; color: #000; border: 1px solid #bababa;">2024.01.01</td>`;
+                    }
+                }
+
+                // 페이지 버튼 생성
+                function generatePagination() {
+                    var maxPage = Math.ceil(totalPosts / postsPerPage);
+                    var paginationContainer = document.querySelector('.pagination-container');
+                    paginationContainer.innerHTML = ''; // 이전에 생성된 버튼 제거
+                    paginationContainer.style.top = 830 + 'px';
+                    if (currentPage == maxPage && totalPosts % postsPerPage != 0) {
+                        paginationContainer.style.top = 830 - ((postsPerPage - (totalPosts % postsPerPage)) * 124) + 'px';
+                    }
+
+                    // 페이지 이전 버튼 추가
+                    var prevPageBtn = document.createElement('button');
+                    prevPageBtn.innerHTML = `<svg width="20" height="32" viewBox="0 0 20 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19.0003 1L1.85742 16L19.0003 31" stroke="black" stroke-width="2"></path></svg>`;
+                    prevPageBtn.className = 'page-btn';
+                    prevPageBtn.onclick = prevPage;
+                    paginationContainer.appendChild(prevPageBtn);
+
+                    // 페이지 번호 이동 버튼 생성
+                    for (var i = 1; i <= maxPage; i++) {
+                        var pageBtn = document.createElement('button');
+                        pageBtn.textContent = i;
+                        pageBtn.className = 'page-btn';
+                        if (i === currentPage) { // 현재 페이지와 같은 경우 굵은 글꼴로 변경
+                            pageBtn.style.fontWeight = 'bold';
+                        }
+                        pageBtn.onclick = function () {
+                            changePage(parseInt(this.textContent));
+                        };
+                        paginationContainer.appendChild(pageBtn);
+                    }
+
+
+                    // 페이지 다음 버튼 추가
+                    var nextPageBtn = document.createElement('button');
+                    nextPageBtn.innerHTML = `<svg width="20" height="32" viewBox="0 0 20 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.999695 31L18.1426 16L0.999695 1" stroke="black" stroke-width="2"></path></svg>`;
+                    nextPageBtn.className = 'page-btn';
+                    nextPageBtn.onclick = nextPage;
+                    paginationContainer.appendChild(nextPageBtn);
+                }
+
+                function prevPage() {
+                    if (currentPage == 1)
+                        return;
+                    changePage(currentPage - 1);
+                }
+
+                function nextPage() {
+                    if (currentPage == maxPage)
+                        return;
+                    changePage(currentPage + 1);
+                }
+
+                function changePage(pageNumber) {
+                    currentPage = pageNumber;
+                    generatePosts();
+                    generatePagination();
+                }
+
+                function initialize() {
+                    generatePosts();
+                    generatePagination();
+                }
+
+                window.onload = initialize;
+
+                // 메인 페이지로 이동하는 함수
+                function goToMainPage() {
+                    var mainPageURL = "Main.html";
+                    window.location.href = mainPageURL;
+                }
+                // 마이페이지-회원정보수정 페이지로 이동하는 함수
+                function GoToMyPage_MemberInfoChange() {
+                    var myPage_MemberInfoChangeURL = "Mypage-memberInfoChange.html";
+                    window.location.href = myPage_MemberInfoChangeURL;
+                }
+                function goToMyPosts() {
+                    // 여기에 내 게시글 페이지로 이동하는 코드를 작성하세요.
+                    var myPage_MyPostsURL = "Mypage-SecondHandTransaction-MyPosts.html"; // 메인 페이지 URL로 수정 필요
+                    window.location.href = myPage_MyPostsURL;
+                }
+                function goToSalesHistory() {
+                    // 여기에 판매내역 페이지로 이동하는 코드를 작성하세요.
+                    var myPage_SalesHistoryURL = "Mypage-SecondHandTransaction-SalesHistory.html"; // 메인 페이지 URL로 수정 필요
+                    window.location.href = myPage_SalesHistoryURL;
+                }
+                function goToPurchaseHistory() {
+                    // 여기에 구매내역 페이지로 이동하는 코드를 작성하세요.
+                    var myPage_PurchaseHistoryURL = "Mypage-SecondHandTransaction-PurchaseHistory.html"; // 메인 페이지 URL로 수정 필요
+                    window.location.href = myPage_PurchaseHistoryURL;
+                }
+                function goToWishlist() {
+                    // 여기에 찜한 상품 페이지로 이동하는 코드를 작성하세요.
+                    var myPage_WishlistURL = "Mypage-SecondHandTransaction-Wishlist.html"; // 메인 페이지 URL로 수정 필요
+                    window.location.href = myPage_WishlistURL;
+                }
+                // 마이페이지-플레이스 리뷰목록 페이지로 이동하는 함수
+                function GoToMyPage_Place_ReviewList() {
+                    var myPage_Place_ReviewListURL = "Mypage-Place-ReviewList.html";
+                    window.location.href = myPage_Place_ReviewListURL;
+                }
+                var dropdownContent_Place = document.querySelector('.dropdown-content-Place');
+                function keepDropdownOpen_Place() {
+                    dropdownContent_Place.style.display = "block";
+                }
+                function hideDropdown_Place() {
+                    dropdownContent_Place.style.display = "none";
+                }
+            </script>
+</body>
+
+</html>
